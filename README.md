@@ -1,3 +1,4 @@
+app-|
     |--model(由于涉及到的表并不是很多,所以没必要将model分开,都放在一起)
     |       |--models.py(定义模型)
     |       |--query.py(扩展query)
@@ -16,7 +17,7 @@
     |
     |
     |
-app-|--templates(模板及静态文件存放的地方)
+    |--templates(模板及静态文件存放的地方)
     |
     |
     |
