@@ -1,0 +1,22 @@
+{% extends 'admin/model/edit.html' %}
+<!-- 自定义模板参见http://flask-admin.readthedocs.io/en/latest/introduction/#working-with-the-built-in-templates -->
+{% block head %}
+{{super()}}
+
+<link href="/static/images/logo.ico" type="image/x-icon" rel="icon" />
+{% endblock %}
+{% block brand %}
+    <div style="height:60px;">
+　　    <div style="float:left;width:27%;">
+           <h3 id="brand"><a href="/admin/" style=" text-decoration:none;color:black;">Bodaboda后台管理</a></h3>
+        </div>
+
+        <div style="float:left;height:60px;width:70%;">
+            <a href="/auth/logout/" style="float:right;padding-left:10px;">退出</a>
+            <span style="float:right;">当前用户:{{current_user.user_name}}</span>
+
+        </div>
+    </div>
+    <hr>
+{{ super() }}
+{% endblock %}

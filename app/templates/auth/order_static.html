@@ -1,0 +1,47 @@
+{% extends 'admin/master.html' %}
+{% import 'admin/lib.html' as lib with context %}
+{% block head %}
+{{super()}}
+
+<link href="/static/images/logo.ico" type="image/x-icon" rel="icon" />
+
+{% endblock %}
+
+{% block brand %}
+    <div style="height:60px;">
+　　    <div style="float:left;width:27%;">
+            <h3 id="brand"><a href="/admin/" style=" text-decoration:none;color:black;">Bodaboda后台管理</a></h3>
+        </div>
+
+        <div style="float:left;height:60px;width:70%;">
+            <a href="/auth/logout/" style="float:right;padding-left:10px;">退出</a>
+            <span style="float:right;">当前用户:{{current_user.user_name}}</span>
+
+        </div>
+    </div>
+    <hr>
+
+
+
+{% endblock %}
+{% block body %}
+<div>
+    <form action="." method="get">
+    <input data-date-format="YYYY-MM-DD" data-role="datepicker" name="start_date" type="text" value="{{start_date}}" >
+    到
+    <input data-date-format="YYYY-MM-DD" data-role="datepicker" name="end_date" type="text" value="{{end_date }}" >
+        <input type="submit" value="查看" />
+
+</form>
+    </div>
+{{my_data|safe}}
+{% endblock %}
+
+{% block tail %}
+    {{ super() }}
+
+    <script src="{{ admin_static.url(filename='vendor/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
+    <script src="{{ admin_static.url(filename='admin/js/form.js') }}"></script>
+
+
+{% endblock %}

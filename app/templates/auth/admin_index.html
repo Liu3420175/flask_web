@@ -1,0 +1,49 @@
+{% extends 'admin/index.html' %}
+<!-- 自定义模板参见http://flask-admin.readthedocs.io/en/latest/introduction/#working-with-the-built-in-templates -->
+{% block head %}
+{{super()}}
+<link  type="text/css" href="/static/css/admin_index.css" rel="stylesheet" />
+<link href="/static/images/logo.ico" type="image/x-icon" rel="icon" />
+{% endblock %}
+{% block brand %}
+    <div style="height:60px;">
+　　    <div style="float:left;width:27%;">
+           <h3 id="brand"><a href="/admin/" style=" text-decoration:none;color:black;">Bodaboda后台管理</a></h3>
+        </div>
+
+        <div style="float:left;height:60px;width:70%;">
+            <a href="/auth/logout/" style="float:right;padding-left:10px;">退出</a>
+            <span style="float:right;">当前用户:{{current_user.user_name}}</span>
+
+        </div>
+    </div>
+    <hr>
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+<h4> 无拘无束的旅程从Bodaboda开始！</h4>
+<p>
+    &nbsp;&nbsp;你是否对那些旅行社提供的行程路线，尤其是那些耳熟能详的景点已经感到厌烦？你是否在来回奔走于标志性景点的旅程中，失去了探索一座新城的惊喜？ 旅行是很私人的事情，美好的事情需要自己去发现，而不是别人来安排！ Bodaboda希望为中国游客提供更方便、更多元、更优惠的国际长途汽车订票服务，是我们创立Bodaboda的初衷。这里可以实时查询世界各地的汽车票并用人民币支付购买，只要动一动手指，就能让你的行程变得更丰富多彩。
+</p>
+<div class="img1">
+    <img src="/static/images/aboutus_1.jpg">
+</div>
+<br>
+<p>
+    &nbsp;&nbsp;Bodaboda名字来源于非洲乌干达语，是一种当地人常用的交通工具，由自行车或摩托车改装而成（有点我们这里“摩的的”的感觉） 因为之前在华为工作的原因，被派驻在非洲，所以经常坐它们。坐上Bodaboda在非洲的小巷穿行，瞬间感受到非洲兄弟的狂野激情。
+</p>
+<div class="img1">
+    <img src="/static/images/aboutus_2.png">
+</div>
+<br>
+<p>
+    &nbsp;&nbsp;Bodaboda代表着一种简单高效出行方式，让我们和走马观花的旅行说“Bye-bye”，体味无人触及的远方，享受真正的当地风情。
+</p>
+<p>
+    &nbsp;&nbsp;目前集成亚太地区8国2万条路线数据 更多国家正快马加鞭加入中： 覆盖：泰国、柬埔寨、马来西亚、新加坡、 印度尼西亚、越南、文莱、菲律宾； 实时查询车票数量，通过海量大数据 找到最优价格和最短时间汽车票； 地图导航，电子票对接，时间提醒，贴心周到服务，只为让你旅途更顺丰！
+</p>
+<div class="img1" >
+    <img src="../../static/images/aboutus_3.png">
+</div>
+{% endblock %}
