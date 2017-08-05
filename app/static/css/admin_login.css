@@ -1,0 +1,115 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    color: #333;
+    background: #fff;
+}
+body .login {
+    background: #eee;
+}
+
+.login #container {
+    background: white;
+    border: 1px solid #ccc;
+    width: 28em;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+}
+#container {
+    position: relative;
+    width: 100%;
+    min-width: 760px;
+    padding: 0;
+}
+#header {
+    width: 100%;
+    background: #417690;
+    color: #ffc;
+    overflow: hidden;
+}
+#branding {
+    float: left;
+}
+
+#branding h1, #branding h1 a:link, #branding h1 a:visited {
+    color: #f4f379;
+}
+#branding h1 {
+    padding: 0 10px;
+    font-size: 18px;
+    margin: 8px 0;
+    font-weight: normal;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+}
+
+#content {
+    margin: 10px 15px;
+}
+
+.login #content-main {
+    width: 100%;
+}
+.login form {
+    margin-top: 1em;
+}
+form {
+    margin: 0;
+    padding: 0;
+}
+
+.login .form-row {
+    padding: 4px 0;
+    float: left;
+    width: 100%;
+}
+
+.login .form-row label {
+    padding-right: 0.5em;
+    line-height: 2em;
+    font-size: 1em;
+    clear: both;
+    color: #333;
+}
+.login .form-row #id_username, .login .form-row #id_password {
+    clear: both;
+    padding: 6px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+input {
+    margin: 2px 0;
+    padding: 2px 3px;
+    vertical-align: middle;
+    font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 11px;
+    height: 40px;
+    line-height: 40px;
+}
+.login .submit-row {
+    clear: both;
+    /*padding: 1em 0 0 9.4em;*/
+}
+.submit-row input{
+  background: #6aa2e0;
+  font-weight: normal;
+  outline: medium none;
+  width: 100%;
+  border: 0 none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 3px;
+}
+.submit-row input:hover{
+
+}
