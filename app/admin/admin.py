@@ -752,8 +752,8 @@ class OrderStatics(BaseView):
     @expose("/")
     def index(self):
         from .statistics import month_days_order_situation, month_order_situation,\
-            create_order_fig
-        import random
+            create_order_fig,month_days_ticket_situation,month_ticket_situation
+
         args = request.values
         start_time = args.get("start_date")
         end_time = args.get("end_date")
@@ -771,6 +771,7 @@ class OrderStatics(BaseView):
         if delta.days <= 60:
             #时间粒度:天
             result  = month_days_order_situation(start_date,end_date)
+            result1 = month_days_ticket_situation(start_date,end_date)
             if delta.days < 31:
                 title = "最近30天"
             else:
@@ -784,10 +785,11 @@ class OrderStatics(BaseView):
             end_month = end_date.replace(day=1) + timedelta(days=31)
             end_month = end_month.replace(day=1)
             result = month_order_situation(start_month,end_month)
+            result1 = month_ticket_situation(start_month,end_month)
             title = "{0}至{1}".format(start_month.strftime("%Y-%m"),
                                      end_month.strftime("%Y-%m"))
 
-        html_data = create_order_fig(result,title,temporal)
+        html_data = create_order_fig(result,result1,title,temporal)
 
         return self.render("auth/order_static.html",
                            my_data=html_data,
