@@ -625,7 +625,7 @@ class WXPayApi(Resource):
                         departure_date=None,
 
                      ):
-
+        from app.celery_task.tasks import send_email
         getcontext().prec = 4
         order_column = dict(own_id=user_id,
                       agent_id=travel_agent_id,
@@ -649,6 +649,7 @@ class WXPayApi(Resource):
             price_RMB,
             ticket_left_id
         )
+        #send_email.apply_async()
         return order_id
 
 
