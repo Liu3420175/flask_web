@@ -106,7 +106,9 @@ def create_order_fig(result,result1,title,temporal=0):
     """
 
     N = len(result)
+    # TODO　这里要注意下，不能用df=df1=pd.DataFrame(index=range(N)),这样写他俩会指向同一对象
     df = pd.DataFrame(index=range(N))
+    df1 = pd.DataFrame(index=range(N))
 
     css = """
     table
@@ -129,6 +131,7 @@ def create_order_fig(result,result1,title,temporal=0):
       text-align: center;
     }
     """
+    print("res=",result,"res1=",result1)
     if temporal == 0:
         x = [datetime.strptime(one[0],"%Y-%m-%d").date() for one in result]
         x1 = [datetime.strptime(one[0],"%Y-%m-%d").date() for one in result1]
@@ -139,12 +142,19 @@ def create_order_fig(result,result1,title,temporal=0):
     y = [one[1] for one in result]
     y1 = [one[1] for one in result1]
     df['数量'] = y
+    df1['数量'] = y1
 
     labels = []# TODO 设置标点样式
     for i in range(N):
         label = df.ix[[i], :].T
         label.columns = ['{0}'.format(x[i])]
         labels.append(str(label.to_html()))
+    labels1 = []
+    for i in range(N):
+        label1 = df1.ix[[i], :].T
+        label1.columns = ['{0}'.format(x1[i])]
+        labels1.append(str(label1.to_html()))
+
     # 配置时间坐标
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
     plt.gca().xaxis.set_major_locator(mdates.DayLocator())
@@ -156,16 +166,14 @@ def create_order_fig(result,result1,title,temporal=0):
     plt.legend(loc='upper right')#制定图例标注
 
     interactive_legend = plugins.PointHTMLTooltip(points[0],labels,css=css)
-    interactive_legend1 = plugins.PointHTMLTooltip(points1[0],labels,css=css)
+    interactive_legend1 = plugins.PointHTMLTooltip(points1[0],labels1,css=css)
     ax.set_xlabel('日期')
     ax.set_ylabel('订单数量')
     title = "{0}订单趋势".format(title)
     ax.set_title(title, size=20)
 
-    plugins.connect(fig, interactive_legend)
-    plugins.connect(fig,interactive_legend1)
+    plugins.connect(fig, interactive_legend,interactive_legend1)
+    #plugins.connect(fig,interactive_legend1)
 
     html_data = mpld3.fig_to_html(fig)
     return html_data
-
-
