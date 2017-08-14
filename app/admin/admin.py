@@ -161,6 +161,8 @@ class OrderView(ModelMixin,ModelView):
     can_delete = False
     can_create = False
     named_filter_urls = True
+
+    column_default_sort = ('id', True)#设置默认排序方式，id从大到小的顺序
     form_overrides = dict(order_status=SelectField
                           , pay_state=SelectField)  # 覆盖默认的标签
 
