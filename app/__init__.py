@@ -63,7 +63,7 @@ def create_app(config_name='default', load_bp=False):
      api.add_resource(UserApi,"/api/v1/user/")
      api.add_resource(PassengerApi,"/api/v1/passenger/")
      api.add_resource(UserOrderApi,"/api/v1/order/")
-     api.add_resource(RouteApi,"/api/v1/route/<string:route_type>")
+     api.add_resource(RouteApi,"/api/v1/route/<string:route_type>/")
      api.add_resource(OrderDetailApi,"/api/v1/order/detail/")
      api.add_resource(LocationApi,"/api/v1/location/")
      api.add_resource(WXPayApi,"/api/v1/wechat/pay/")
