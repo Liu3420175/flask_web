@@ -46,7 +46,7 @@ class OrderSchema(Schema):
     pay_state = fields.Str()
     route_id = fields.Int()
     is_reviewed = fields.Bool()
-    total_price = fields.Decimal()
+    total_price = fields.Decimal(allow_nan=True,as_string=True)#TODO 这步为什么要这样做，看下官方文档就知道了
     departure_date = fields.Str()
 
 
@@ -57,7 +57,7 @@ class TicketSoldSchema(Schema):
     id = fields.Int()
     order_id = fields.Int()
     passenger_id = fields.Int()
-    price_RMB = fields.Decimal()
+    price_RMB = fields.Decimal(allow_nan=True,as_string=True)
     passenger = fields.Nested(PassengerSchema,only=["passenger_name_en",])
     ticket_left_info = fields.Str()
 
