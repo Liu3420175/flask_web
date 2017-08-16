@@ -22,11 +22,21 @@ class RegistrationForm(Form):
 
     @staticmethod
     def validate_email(field):
+        """
+        验证器
+        :param field: 
+        :return: 
+        """
         if OwnUser.query.filter_by(contact_email=field.data).first():
             raise ValidationError('Email already registered.')
 
     @staticmethod
     def validate_username(field):
+        """
+        验证器
+        :param field: 
+        :return: 
+        """
         if OwnUser.query.filter_by(user_name=field.data).first():
             raise ValidationError('Username already in use.')
 
