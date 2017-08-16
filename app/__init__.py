@@ -57,7 +57,7 @@ def create_app(config_name='default', load_bp=False):
  if load_bp:
      from app.API import UserApi, PayUnifiedorderApi, CityApi, SearchSchedulesApi, \
          WXLoginApi, WXPayApi, LocationApi, OrderDetailApi, RouteApi, UserOrderApi, \
-         PassengerApi
+         PassengerApi,RouteCommentApi
      from .auth import auth as auth_url
 
      api.add_resource(UserApi,"/api/v1/user/")
@@ -71,6 +71,7 @@ def create_app(config_name='default', load_bp=False):
      api.add_resource(PayUnifiedorderApi,"/api/v1/pay/unified/")
      api.add_resource(SearchSchedulesApi,"/api/v1/search/bus/")
      api.add_resource(CityApi,"/api/v1/city/")
+     api.add_resource(RouteCommentApi,"/api/v1/routecomment/")
 
      app.register_blueprint(auth_url,url_prefix="/auth")
 

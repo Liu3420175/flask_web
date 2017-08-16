@@ -1128,7 +1128,7 @@ class RouteApi(Resource):
             return  render_template('404.html')
 
 
-class RouteComment(Resource):
+class RouteCommentApi(Resource):
 
     decorators = [http_basic_auth]
 
