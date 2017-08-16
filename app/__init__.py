@@ -37,6 +37,7 @@ with warnings.catch_warnings():
     admin.add_view(CountryView(db.session, name="D", category="DD"))
 
     admin.add_view(OrderStatics(name="Order",category="统计"))
+    admin.add_view(UserStatics(name="User",category="统计"))
 
 
 

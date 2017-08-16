@@ -760,7 +760,7 @@ class OrderStatics(BaseView):
         start_time = args.get("start_date")
         end_time = args.get("end_date")
         today = datetime.today()
-        temporal = 0#时间粒度，默认表示天
+        #temporal = 0#时间粒度，默认表示天
         start_date = datetime.strptime(start_time,
             "%Y-%m-%d") if start_time else (today - timedelta(days=30)
                                             ).replace(hour=0,minute=0,second=0)
@@ -772,6 +772,7 @@ class OrderStatics(BaseView):
         delta = end_date - start_date
         if delta.days <= 60:
             #时间粒度:天
+            temporal = 0  # 时间粒度，默认表示天
             result  = month_days_model_situation(Order,start_date,end_date)
             result1 = month_days_model_situation(TicketSold,start_date,end_date)
             if delta.days < 31:
@@ -791,9 +792,66 @@ class OrderStatics(BaseView):
             title = "{0}至{1}".format(start_month.strftime("%Y-%m"),
                                      end_month.strftime("%Y-%m"))
 
-        html_data = month_model_situation(result,result1,title,temporal)
+        html_data = model_increase_fig(result,result1,title,temporal,
+                                          ("订单趋势","出票趋势"))
 
         return self.render("auth/order_static.html",
+                           my_data=html_data,
+                           start_date=start_date.date(),
+                           end_date=end_date.date())
+
+
+
+
+class UserStatics(BaseView):
+    """
+    与订单分析有关的类
+    """
+    @expose("/")
+    def index(self):
+        from .statistics import month_model_situation,month_days_model_situation,\
+            model_increase_fig,month_active_model_situation,month_days_active_model_situation
+        from app.models import OwnUser
+        args = request.values
+        start_time = args.get("start_date")
+        end_time = args.get("end_date")
+        today = datetime.today()
+        #temporal = 0#时间粒度，默认表示天
+        start_date = datetime.strptime(start_time,
+            "%Y-%m-%d") if start_time else (today - timedelta(days=30)
+                                            ).replace(hour=0,minute=0,second=0)
+
+        end_date = datetime.strptime(end_time,"%Y-%m-%d") if end_time else today.replace(
+        hour=0,minute=0,second=0
+        )
+
+        delta = end_date - start_date
+        if delta.days <= 60:
+            #时间粒度:天
+            temporal = 0  # 时间粒度，默认表示天
+            result  = month_days_model_situation(OwnUser,start_date,end_date)
+            result1 = month_days_active_model_situation(OwnUser,start_date,end_date)
+            if delta.days < 31:
+                title = "最近30天"
+            else:
+                title = "{0}至{1}".format(start_date.strftime("%Y-%m-%d"),
+                                         end_date.strftime("%Y-%m-%d"))
+        else:
+            #时间粒度:月
+            temporal = 1
+            start_month = start_date.replace(day=1)
+
+            end_month = end_date.replace(day=1) + timedelta(days=31)
+            end_month = end_month.replace(day=1)
+            result = month_model_situation(OwnUser,start_month,end_month)
+            result1 = month_active_model_situation(OwnUser,start_month,end_month)
+            title = "{0}至{1}".format(start_month.strftime("%Y-%m"),
+                                     end_month.strftime("%Y-%m"))
+
+        html_data = model_increase_fig(result,result1,title,temporal,
+                                          ("新增用户趋势","活跃用户趋势"))
+
+        return self.render("auth/user_static.html",
                            my_data=html_data,
                            start_date=start_date.date(),
                            end_date=end_date.date())
