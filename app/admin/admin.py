@@ -810,8 +810,10 @@ class UserStatics(BaseView):
     @expose("/")
     def index(self):
         from .statistics import month_model_situation,month_days_model_situation,\
-            model_increase_fig,month_active_model_situation,month_days_active_model_situation
+        model_increase_fig,month_active_model_situation,month_days_active_model_situation, \
+            month_user_from_situation, create_active_user_fig
         from app.models import OwnUser
+        from app.models import TravelAgent
         args = request.values
         start_time = args.get("start_date")
         end_time = args.get("end_date")
@@ -847,11 +849,17 @@ class UserStatics(BaseView):
             result1 = month_active_model_situation(OwnUser,start_month,end_month)
             title = "{0}至{1}".format(start_month.strftime("%Y-%m"),
                                      end_month.strftime("%Y-%m"))
-
+        distributors = TravelAgent.query.all()
+        tmp = {one.name: 0 for one in distributors}
+        tmp1 = {one.id: one.name for one in distributors}
+        tmp1.update({None: "未知"})
+        result_ = month_user_from_situation(start_date, end_date, tmp, tmp1)
         html_data = model_increase_fig(result,result1,title,temporal,
                                           ("新增用户趋势","活跃用户趋势"))
+        html_data1 = create_active_user_fig(result_, title)
 
         return self.render("auth/user_static.html",
                            my_data=html_data,
+                           my_data1=html_data1,
                            start_date=start_date.date(),
                            end_date=end_date.date())

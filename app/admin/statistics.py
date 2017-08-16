@@ -12,6 +12,8 @@ import numpy as np
 import mpld3
 from mpld3 import plugins
 import pandas as pd
+import random
+from .color import colors
 
 session = db.session
 
@@ -132,7 +134,7 @@ def model_increase_fig(result,result1,title,temporal=0,_label=("订单趋势","�
       text-align: center;
     }
     """
-    print("res=",result,"res1=",result1)
+
     if temporal == 0:
         x = [datetime.strptime(one[0],"%Y-%m-%d").date() for one in result]
         x1 = [datetime.strptime(one[0],"%Y-%m-%d").date() for one in result1]
@@ -176,5 +178,75 @@ def model_increase_fig(result,result1,title,temporal=0,_label=("订单趋势","�
     plugins.connect(fig, interactive_legend,interactive_legend1)
     #plugins.connect(fig,interactive_legend1)
 
+    html_data = mpld3.fig_to_html(fig)
+    return html_data
+
+
+def month_user_from_situation(start_month, end_month, distributor, distributor1):
+    """
+           用户来源情况
+           时间粒度：月
+           返回结果:[(渠道,数量),]
+
+           :return: 
+           """
+    from app.models import OwnUser
+    result = session.query(OwnUser.distributor_id,
+                           func.count("*")
+                           ).filter(OwnUser.create_time.between(start_month, end_month)
+                                    ).group_by(OwnUser.distributor_id
+                                               ).all()
+
+    result = [(distributor1[one[0]], one[1]) for one in result]
+    res_dict = dict(result)
+    distributor.update(res_dict)
+    result = distributor.items()
+
+    total = sum([one[1] for one in result])
+    res = [(one[0], one[1] / total * 100) for one in result]
+    return res
+
+
+def create_active_user_fig(result, title, temporal=0):
+    """
+    新增用户来源分析
+    :param result: 
+    :param title: 
+    :param temporal: 
+    :return: 
+    """
+    # 调节图形大小，宽，高
+    fig, ax = plt.subplots()
+
+    plt.figure(figsize=(9, 9))
+    # 定义饼状图的标签，标签是列表
+    labels = [one[0] for one in result]
+    # 每个标签占多大，会自动去算百分比
+    sizes = [one[1] for one in result]
+    color = random.sample(colors, len(result))
+    # 将某部分爆炸出来， 使用括号，将第一块分割出来，数值的大小是分割出来的与其他两块的间隙
+    # explode = (0.05, 0, 0)
+
+    patches, l_text, p_text = ax.pie(sizes,
+                                     labels=labels, colors=color,
+                                     labeldistance=1.1, autopct='%3.1f%%', shadow=False,
+                                     startangle=90, pctdistance=0.6)
+
+    # labeldistance，文本的位置离远点有多远，1.1指1.1倍半径的位置
+    # autopct，圆里面的文本格式，%3.1f%%表示小数有三位，整数有一位的浮点数
+    # shadow，饼是否有阴影
+    # startangle，起始角度，0，表示从0开始逆时针转，为第一块。一般选择从90度开始比较好看
+    # pctdistance，百分比的text离圆心的距离
+    # patches, l_texts, p_texts，为了得到饼图的返回值，p_texts饼图内部文本的，l_texts饼图外label的文本
+    # 改变文本的大小
+    # 方法是把每一个text遍历。调用set_size方法设置它的属性
+    for t in l_text:
+        t.set_size = (30)
+    for t in p_text:
+        t.set_size = (20)
+    # 设置x，y轴刻度一致，这样饼图才能是圆的
+    plt.axis('equal')
+    title = "{0}用户来源分布".format(title)
+    ax.set_title(title, size=20)
     html_data = mpld3.fig_to_html(fig)
     return html_data
