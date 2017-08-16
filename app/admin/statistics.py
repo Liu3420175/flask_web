@@ -5,7 +5,7 @@
 from sqlalchemy import func
 from datetime import datetime,timedelta
 import matplotlib.dates as mdates
-from app.models import Order,TicketSold
+
 from app import db
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,36 +16,37 @@ import pandas as pd
 session = db.session
 
 
-def month_order_situation(start_month,end_month):
+def month_model_situation(Model,start_month,end_month):
     """
-    按月统计订单情况
+    按月统计某个模型新增情况
     时间粒度：月
     返回结果:[(日期,数量),]
+    Model：某个模型,把需要类似统计功能的模型抽象出来，简化代码
     
     :return: 
     """
 
-    result = session.query(func.date_format(Order.create_time,"%Y-%m"),func.count("*")
-                           ).filter(Order.create_time.between(start_month,end_month)
-                                    ).group_by(func.date_format(Order.create_time,"%Y-%m")
+    result = session.query(func.date_format(Model.create_time,"%Y-%m"),func.count("*")
+                           ).filter(Model.create_time.between(start_month,end_month)
+                                    ).group_by(func.date_format(Model.create_time,"%Y-%m")
                                                ).all()
 
     return result
 
 
-def month_days_order_situation(start_time,end_time):
+def month_days_model_situation(Model,start_time,end_time):
     """
-    查看某个时间段１的订单趋势,默认是最近30天
+    查看某个时间段某个模型新增趋势,默认是最近30天
     时间粒度:天
-    
+    :param Model
     :param start_time: 
     :param end_time: 
     :return: 
     """
 
-    result = session.query(func.date_format(Order.create_time, "%Y-%m-%d"), func.count("*")
-                           ).filter(Order.create_time.between(start_time, end_time)
-                            ).group_by(func.date_format(Order.create_time, "%Y-%m-%d")
+    result = session.query(func.date_format(Model.create_time, "%Y-%m-%d"), func.count("*")
+                           ).filter(Model.create_time.between(start_time, end_time)
+                            ).group_by(func.date_format(Model.create_time, "%Y-%m-%d")
                                                ).all()
     result = dict(result)#对于有些日期没有的，要补充为0
     delta = (end_time - start_time).days
@@ -55,50 +56,11 @@ def month_days_order_situation(start_time,end_time):
 
     return res
 
-def month_ticket_situation(start_month,end_month):
-    """
-    按月统计出票状况
-    时间粒度:月
-    返回结果:[(日期,数量),]
-    :param start_month: 
-    :param end_month: 
-    :return: 
-    """
-    result = session.query(func.date_format(TicketSold.create_time,"%Y-%m"),
-                           func.count("*")
-                           ).filter(TicketSold.create_time.between(start_month,
-                                                                   end_month)
-                        ).group_by(func.date_format(TicketSold.create_time,"%Y-%m")
-                                   ).all()
-    return result
-
-def month_days_ticket_situation(start_time,end_time):
-    """
-    查看某个时间段的出票趋势,默认是最近30天
-    时间粒度:天
-    :param start_time: 
-    :param end_time: 
-    :return: 
-    """
-
-    result = session.query(func.date_format(TicketSold.create_time,"%Y-%m-%d"),
-                           func.count("*")
-                           ).filter(TicketSold.create_time.between(start_time,
-                                                              end_time)
-                        ).group_by(func.date_format(TicketSold.create_time, "%Y-%m-%d")
-                                               ).all()
-    result = dict(result)  # 对于有些日期没有的，要补充为0
-    delta = (end_time - start_time).days
-    between = map(lambda x, y: (x + timedelta(days=y)).strftime("%Y-%m-%d"),
-                  [start_time] * delta, range(delta))
-    res = [(one, result[one] if one in result else 0) for one in between]
-
-    return res
 
 
 
 
-def create_order_fig(result,result1,title,temporal=0):
+def model_increase_fig(result,result1,title,temporal=0):
     """
     绘图,将两个折线放在一个图里
     :param result: 
